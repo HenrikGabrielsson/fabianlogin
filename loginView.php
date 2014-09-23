@@ -8,6 +8,10 @@
 		private $cookieUsername = "Username";					// Nyckel. Används i $_COOKIE för att lagra ett sparat användarnamn.
 		private $cookiePassword = "Password";					// Nyckel. Används i $_COOKIE för att lagra ett sparat lösenord.
 		
+		private $regName = "regName";
+		private $regPassword1 = "regPassword1";
+		private $regPassword2 = "regPassword2";
+		
 		public function __construct(LoginModel $model) {
 			$this->model = $model;
 		}
@@ -20,7 +24,8 @@
 			$year = strftime("%Y");								// År.
 			$time = strftime("%H:%M:%S");						// Tid.
 			
-			$loginStatus = "Ej inloggad";						// Inloggnings-status. Två lägen: "Ej inloggad" & "[Användarnamn] är inloggad".
+			$loginStatus = "Ej inloggad";						// Inloggnings-status. Två lägen: "Ej inloggad" & "[Användarnamn] är inloggad".			
+			$link = "<a href='?register'>Registrera ny användare</a>"; //länk till registreringsformulär/tillbaka därifrån.
 			
 			// $content innehåller de html-delar som är beroende av användarens inloggnings-status. Ett formulär om man är utloggad och en utloggnings-länk om man är inloggad.
 			$content = "	<form action='?login' method='post'>
@@ -38,6 +43,28 @@
 			if($this->model->userIsLoggedIn()) {
 				$loginStatus = $this->model->currentUser() . " är inloggad.";
 				$content = $this->message . "<p><a href='?logout'>Logga ut</a></p>"; //$this->message innehåller eventuellt ett meddelande till användaren.
+				$link = "";
+			}
+			
+			//om användaren vill registrera sig
+			else if($this->registerRequest())
+			{
+				$loginStatus = "Ej inloggad, Registrerar användare";
+				$link = "<a href='?'>Tillbaka</a>";
+				$content = 
+				"
+				<form method='post'>
+					<fieldset>
+					<legend>Registrera ny användare - Skriv in användarnamn och lösenord</legend>
+					
+					<label for='regName'>Namn:</label><input type='text' name='".$this->regName."' id='regName' /><br />
+					<label for='regPassword1'>Lösenord:</label><input type='password' name='".$this->regPassword1."' id='regPassword1' /><br />
+					<label for='regPassword2'>Repetera lösenord:</label><input type='password' name='".$this->regPassword2."' id='regPassword2'/><br />
+					<label for='regSubmit'>Skicka:</label><input type='submit' value='registrera' id='regSubmit'/>
+					
+					</fieldset>
+				</form>
+				";
 			}
 
 			// De (än så länge) statiska delarna av sidan.
@@ -50,7 +77,7 @@
 		    			</head>
 		    			<body>
 		    			<h1>Labb 2 - fg222cj</h1>
-		    			<a href=''>Registrera ny användare</a>
+		    			".$link."
 		    			<h2>". $loginStatus ."</h2>
 		    				" . $content . "
 		    				" . $weekDay . ", den " . $date . " " . $month . " år " . $year . ". Klockan är [" . $time . "].
@@ -168,5 +195,40 @@
     			setcookie($c_key, NULL, 1);
 			}
 		}
+		
+		//True om användare vill registrera sig
+		public function registerRequest()
+		{
+			return isset($_GET['register']);
+		}
+		
+		//true om användaren har skickat formulär för att registrera sig.
+		public function registerAttempted()
+		{
+			if(isset($_POST[$this->regName]))
+			{
+				return true;
+			}
+			return false;
+		}
+		
+		//returnerar användarnamn från registreringsformuläret.
+		public function regFormName()
+		{
+			return $_POST[$this->regName];
+		}
+		
+		//returnerar lösenord 1 från registreringsformuläret.
+		public function regFormPassword1()
+		{
+			return $_POST[$this->regPassword1];
+		}
+		
+		//returnerar lösenord 2 från registreringsformuläret.
+		public function regFormPassword2()
+		{
+			return $_POST[$this->regPassword2];
+		}
+		
 	}
 ?>

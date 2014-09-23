@@ -20,6 +20,12 @@
 				$this->view->doLogout();	// Genererar eventuella ut-meddelanden till användaren.
 			}
 			
+			//Om användaren vill registrera sig och har skickat formuläret.
+			if($this->view->registerAttempted())
+			{
+				$this->doRegister();			
+			}
+			
 			$this->doStuff();
 		}
 		
@@ -48,6 +54,15 @@
 			catch(Exception $e) {
 				$this->view->loginError($e->getMessage());
 			}
+		}
+		
+		//försök registrera ny användare
+		public function doRegister()
+		{
+			$username = $this->view->regFormName();
+			$password1 = $this->view->regFormPassword1();
+			$password2 = $this->view->regFormPassword2();
+			throw new Exception("ej klar: doRegister");
 		}
 	
 	}
