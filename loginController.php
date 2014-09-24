@@ -62,7 +62,21 @@
 			$username = $this->view->regFormName();
 			$password1 = $this->view->regFormPassword1();
 			$password2 = $this->view->regFormPassword2();
-			throw new Exception("ej klar: doRegister");
+			
+			//försöker att registrera användare.
+			$registerSuccess = $this->model->register($username, $password1, $password2);
+			
+			//om registrering fungerande.
+			if($registerSuccess)
+			{
+				$this->view->registerSuccess();
+			}
+			//om det gick fel.
+			else 
+			{
+				$this->view->registerError($this->model->getRegErrors());
+			}
+			
 		}
 	
 	}

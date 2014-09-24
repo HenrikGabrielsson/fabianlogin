@@ -56,8 +56,8 @@
 				<form method='post'>
 					<fieldset>
 					<legend>Registrera ny användare - Skriv in användarnamn och lösenord</legend>
-					
-					<label for='regName'>Namn:</label><input type='text' name='".$this->regName."' id='regName' /><br />
+					".$this->message."
+					<label for='regName'>Namn:</label><input type='text' name='".$this->regName."' id='regName' value='".$this->model->getRegUserName()."' /><br />
 					<label for='regPassword1'>Lösenord:</label><input type='password' name='".$this->regPassword1."' id='regPassword1' /><br />
 					<label for='regPassword2'>Repetera lösenord:</label><input type='password' name='".$this->regPassword2."' id='regPassword2'/><br />
 					<label for='regSubmit'>Skicka:</label><input type='submit' value='registrera' id='regSubmit'/>
@@ -210,6 +210,28 @@
 				return true;
 			}
 			return false;
+		}
+		
+		public function registerSuccess()
+		{
+			throw new Exception("registerSuccess");
+		}
+		
+		//funktion som lägger till alla fel (vid registrering) i meddelande till klienten
+		public function registerError($errorArray)
+		{
+			if($errorArray["shortName"])
+			{
+				$this->message .="<p>Användarnamnet har för få tecken. Minst 3 tecken</p>";
+			}
+			if($errorArray["shortPW"])
+			{
+				$this->message .="<p>Lösenorden har för få tecken. Minst 6 tecken</p>";
+			}
+			if($errorArray["noMatchPW"])
+			{
+				$this->message .="<p>Lösenorden matchar inte.</p>";
+			}
 		}
 		
 		//returnerar användarnamn från registreringsformuläret.

@@ -9,6 +9,9 @@
 		private $savedCredentialsFilePath = "SavedCredentials.txt";	// I denna fil lagras användare och temporära lösenord när användaren vill fortsätta vara inloggad.
 		private $helpers;	// Hjälp-funktioner.
 		
+		private $regErrorList = array("shortName" => false, "shortPW" => false, "noMatchPW" => false );	//lista med fel som uppstått vid registrering.
+		private $regUserName = "";																		//Namnet som användaren försöker registrera				
+		
 		public function __construct() {
 			$this->helpers = new Helpers();
 		}
@@ -101,5 +104,49 @@
 			$savedCredentials = $username . ";" . $password . ";" . $expirationTime;
 			$this->helpers->WriteLineToFile($this->savedCredentialsFilePath, $savedCredentials);
 		}
+		
+
+		//Funktion som försöker att registrera en ny användare.
+		public function register($userName, $password1, $password2)
+		{
+			$this->regUserName = $userName;
+			
+			//kollar om användarnamnet/lösenordet är för kort.
+			if(strlen($userName) < 3)
+			{
+				$this->regErrorList["shortName"] = true;
+			}
+			if(strlen($password1) < 6)
+			{
+				$this->regErrorList["shortPW"] = true;
+			}
+			//kollar så lösenordet är likadant båda gångerna.
+			else if($password1 !== $password2)
+			{
+				$this->regErrorList["noMatchPW"] = true;
+			}
+			
+			
+			//registrering funkar inte om det finns några fel.
+			if(count($this->regErrorList) > 0)
+			{
+				return false;
+			}
+			return true;
+				
+		}
+		
+		//returnerar listan med fel som skedde vid registrering.
+		public function getRegErrors()
+		{
+			return $this->regErrorList;
+		}
+		
+		//hämtar användarnamn som klient vill registrera.
+		public function getRegUserName()
+		{
+			return $this->regUserName;
+		}
+		
     }
 ?>
