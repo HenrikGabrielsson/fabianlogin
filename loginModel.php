@@ -82,7 +82,7 @@
 		private function Authenticate($username, $password, $source) {
 			$users = file($source);
 			foreach($users as $user) {
-				$credentials = explode(";", $user);
+				$credentials = explode(";", trim($user));
 				if($username == $credentials[0] && $password == $credentials[1]) {
 					// Om det inte finns en lagrad tid i lösenordsfilen (för att t.ex. markera en cookies utgångsdatum) eller om den lagrade tiden
 					// är senare den nuvarande tiden så är allt okej och användaren loggas in.
