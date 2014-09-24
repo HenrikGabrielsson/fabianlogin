@@ -524,3 +524,30 @@ java.io.FileNotFoundException
 
 !ENTRY org.eclipse.core.jobs 2 2 2014-09-23 21:29:18.688
 !MESSAGE Job found still running after platform shutdown.  Jobs should be canceled by the plugin that scheduled them during shutdown: com.aptana.usage.internal.DefaultAnalyticsEventHandler$1
+!SESSION 2014-09-24 09:56:21.561 -----------------------------------------------
+eclipse.buildId=3.6.0.201407100658
+java.version=1.7.0_67
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=sv_SE
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY com.aptana.editor.php 4 0 2014-09-24 14:02:38.097
+!MESSAGE (Build 3.6.0.201407100658) [ERROR]  PHP parser error
+!STACK 0
+java.lang.IllegalArgumentException
+	at org2.eclipse.php.internal.core.ast.nodes.DereferenceNode.<init>(DereferenceNode.java:39)
+	at org2.eclipse.php.internal.core.ast.scanner.php54.CUP$PhpAstParser$actions.CUP$PhpAstParser$do_action4(PhpAstParser.java:10167)
+	at org2.eclipse.php.internal.core.ast.scanner.php54.CUP$PhpAstParser$actions.CUP$PhpAstParser$do_action(PhpAstParser.java:3289)
+	at org2.eclipse.php.internal.core.ast.scanner.php54.PhpAstParser.do_action(PhpAstParser.java:3223)
+	at java_cup.runtime.lr_parser.parse(lr_parser.java:569)
+	at org2.eclipse.php.internal.core.ast.nodes.ASTParser.createAST(ASTParser.java:204)
+	at com.aptana.editor.php.internal.parser.PHPParser.parse(PHPParser.java:122)
+	at com.aptana.parsing.AbstractParser.parse(AbstractParser.java:10)
+	at com.aptana.parsing.ParsingEngine.parse(ParsingEngine.java:368)
+	at com.aptana.parsing.ParserPoolFactory.parse(ParserPoolFactory.java:230)
+	at com.aptana.editor.php.internal.ui.editor.PHPSourceEditor.getAST(PHPSourceEditor.java:180)
+	at com.aptana.editor.common.text.reconciler.CommonReconcilingStrategy.reconcile(CommonReconcilingStrategy.java:246)
+	at com.aptana.editor.common.text.reconciler.CommonReconcilingStrategy.reconcile(CommonReconcilingStrategy.java:235)
+	at com.aptana.editor.common.text.reconciler.CommonReconcilingStrategy.fullReconcile(CommonReconcilingStrategy.java:477)
+	at com.aptana.editor.common.text.reconciler.CommonReconciler.process(CommonReconciler.java:162)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:206)

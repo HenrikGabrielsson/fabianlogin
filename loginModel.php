@@ -9,8 +9,8 @@
 		private $savedCredentialsFilePath = "SavedCredentials.txt";	// I denna fil lagras användare och temporära lösenord när användaren vill fortsätta vara inloggad.
 		private $helpers;	// Hjälp-funktioner.
 		
-		private $regErrorList = array("shortName" => false, "shortPW" => false, "noMatchPW" => false );	//lista med fel som uppstått vid registrering.
-		private $regUserName = "";																		//Namnet som användaren försöker registrera				
+		private $regErrorList = array();	//lista med fel som uppstått vid registrering.
+		private $regUserName = "";			//Namnet som användaren försöker registrera				
 		
 		public function __construct() {
 			$this->helpers = new Helpers();
@@ -107,9 +107,12 @@
 		
 
 		//Funktion som försöker att registrera en ny användare.
-		public function register($userName, $password1, $password2)
+		public function attemptRegister($userName, $password1, $password2)
 		{
-			$this->regUserName = $userName;
+			//fil med alla registrerade användare
+			$users = file($this->usersFilePath);
+			
+			$this->regUserName = strip_tags($userName);
 			
 			//kollar om användarnamnet/lösenordet är för kort.
 			if(strlen($userName) < 3)
@@ -120,21 +123,41 @@
 			{
 				$this->regErrorList["shortPW"] = true;
 			}
+			
 			//kollar så lösenordet är likadant båda gångerna.
 			else if($password1 !== $password2)
 			{
 				$this->regErrorList["noMatchPW"] = true;
 			}
+			//kollar så det inte finns några ogiltiga tecken (i detta fall: html-tags)
+			if(strlen($userName) !== strlen(strip_tags($userName))) 
+			{
+				$this->regErrorList["tagsInName"] = true;
+			}			
 			
+			//kollar ifall ett namn redan är upptaget.		
+			foreach($users as $user)
+			{
+				//hämta bara namnet från filen
+				$fileUserName = explode(";",$user)[0];
+				//jämför namn från parameter med namn i fil.
+				if($fileUserName === $userName)
+				{
+					$this->regErrorList["takenName"] = true;
+				}
+			}
 			
 			//registrering funkar inte om det finns några fel.
 			if(count($this->regErrorList) > 0)
 			{
 				return false;
 			}
+			
+			//lägg till användare.
 			return true;
 				
 		}
+
 		
 		//returnerar listan med fel som skedde vid registrering.
 		public function getRegErrors()

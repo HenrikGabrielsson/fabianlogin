@@ -220,17 +220,25 @@
 		//funktion som lägger till alla fel (vid registrering) i meddelande till klienten
 		public function registerError($errorArray)
 		{
-			if($errorArray["shortName"])
+			if(isset($errorArray["shortName"]))
 			{
 				$this->message .="<p>Användarnamnet har för få tecken. Minst 3 tecken</p>";
 			}
-			if($errorArray["shortPW"])
+			if(isset($errorArray["shortPW"]))
 			{
 				$this->message .="<p>Lösenorden har för få tecken. Minst 6 tecken</p>";
 			}
-			if($errorArray["noMatchPW"])
+			if(isset($errorArray["noMatchPW"]))
 			{
 				$this->message .="<p>Lösenorden matchar inte.</p>";
+			}
+			if(isset($errorArray["tagsInName"]))
+			{
+				$this->message .="<p>Användarnamnet innehåller ogiltiga tecken</p>";
+			}
+			if(isset($errorArray["takenName"]))
+			{
+				$this->message .="<p>Användarnamnet är redan upptaget.</p>";
 			}
 		}
 		

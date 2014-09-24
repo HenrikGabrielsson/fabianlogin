@@ -64,7 +64,7 @@
 			$password2 = $this->view->regFormPassword2();
 			
 			//försöker att registrera användare.
-			$registerSuccess = $this->model->register($username, $password1, $password2);
+			$registerSuccess = $this->model->attemptRegister($username, $password1, $password2);
 			
 			//om registrering fungerande.
 			if($registerSuccess)
