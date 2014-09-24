@@ -154,6 +154,8 @@
 			}
 			
 			//lägg till användare.
+			$lineToFile = $userName . ";" . md5($password1);
+			$this->helpers->WriteLineToFile($this->usersFilePath, $lineToFile);
 			return true;
 				
 		}

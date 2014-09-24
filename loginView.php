@@ -11,6 +11,7 @@
 		private $regName = "regName";
 		private $regPassword1 = "regPassword1";
 		private $regPassword2 = "regPassword2";
+		private $registrationDone = false;
 		
 		public function __construct(LoginModel $model) {
 			$this->model = $model;
@@ -46,8 +47,8 @@
 				$link = "";
 			}
 			
-			//om användaren vill registrera sig
-			else if($this->registerRequest())
+			//om användaren vill registrera sig (inte ifall användaren precis har registrerat sig)
+			if($this->registerRequest() && !$this->registrationDone)
 			{
 				$loginStatus = "Ej inloggad, Registrerar användare";
 				$link = "<a href='?'>Tillbaka</a>";
@@ -212,9 +213,13 @@
 			return false;
 		}
 		
+		//när en registrering lyckas. Ett meddelande och login visas.
 		public function registerSuccess()
 		{
-			throw new Exception("registerSuccess");
+			$this->registrationDone = true;
+			$this->message = "<p>Registrering av ny användare lyckades</p>";
+			$_POST[$this->usernameLocation] = $this->model->getRegUserName();
+			
 		}
 		
 		//funktion som lägger till alla fel (vid registrering) i meddelande till klienten
