@@ -139,9 +139,9 @@
 			foreach($users as $user)
 			{
 				//hämta bara namnet från filen
-				$fileUserName = explode(";",$user)[0];
+				$fileUserName = explode(";",$user);
 				//jämför namn från parameter med namn i fil.
-				if($fileUserName === $userName)
+				if($fileUserName[0] === $userName)
 				{
 					$this->regErrorList["takenName"] = true;
 				}

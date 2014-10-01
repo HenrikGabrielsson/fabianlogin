@@ -91,7 +91,7 @@
 			// Om användaren vill hållas inloggad så sparas dennes användarnamn och ett temporärt lösenord ner i cookies.
 			// Uppgifterna lagras även på servern tillsammans med cookiens livstid för att kontrollera att ingen har fifflat med cookien. 
 			if($loginType == "SaveCredentialsLoginSuccess") {
-				$time = time() + (60);	// Ändra här för att sätta livstid på cookien. 60*60*24*30 = 30 dygn
+				$time = time() + (60*60*24*30);	// Ändra här för att sätta livstid på cookien. 60*60*24*30 = 30 dygn
 				$temporaryPassword = md5($time . $_POST[$this->passwordLocation]);
 				setcookie($this->cookieUsername, $_POST[$this->usernameLocation], $time);
 				setcookie($this->cookiePassword, $temporaryPassword, $time);
